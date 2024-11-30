@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<h1>{{ category }} Fragrances</h1>
+
+<!-- Show Filters -->
+<form method="get" id="filters-form">
+    <div class="filters">
+        <label for="sort-filter">Sort by:</label>
+        <select name="sort" id="sort-filter" onchange="document.getElementById('filters-form').submit();">
+            <option value="">Price</option>
+            <option value="priceAsc" {% if request.GET.sort == 'priceAsc' %}selected{% endif %}>Low to High</option>
+            <option value="priceDesc" {% if request.GET.sort == 'priceDesc' %}selected{% endif %}>High to Low</option>
+        </select>
+        <label for="sale-filter">Deals:</label>
+        <select name="sale" id="deals-filter" onchange="document.getElementById('filters-form').submit();">
+            <option value="">All</option>
+            <option value="onSale" {% if request.GET.sale == 'onSale' %}selected{% endif %}>Sale</option>
+        </select>
+    </div>
+</form>
+
+<!-- View Products -->
+<div class="row">
+    {% for frag in fragrance %}
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{{ frag.img }}" class="card-img-top" alt="{{ frag.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ frag.name }}</h5>
+                    {% if frag.isOnSale %}
+                        <p class="card-text">
+                            <span style="text-decoration: line-through;">${{ frag.price }}</span>
+                            <span style="color: red;">${{ frag.salePrice }}</span>
+                        </p>
+                    {% else %}
+                        <p class="card-text">${{ frag.price }}</p>
+                    {% endif %}
+                    
+                    <div class="add-to-cart">
+                        <input type="number" id="quantity-{{ frag.id }}" value="1" min="1" style="width: 60px;">
+                        <button class="btn btn-primary" onclick="addToCart('{{ frag.id }}', '{{ frag.price }}')">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

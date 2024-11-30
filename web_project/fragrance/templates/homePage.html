@@ -2,18 +2,5 @@
 
 {% block content %}
 <h1>Fragrance website</h1>
-<div class="row">
-    {% for frag in fragrance %}
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="{{ frag.img }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">{{ frag.name }}</h5>
-                <p class="card-text">${{ frag.price }}</p>
-                <a href="#" class="btn btn-primary">Add to Cart</a>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
-</div>        
+
 {% endblock %}

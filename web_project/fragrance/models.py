@@ -1,8 +1,9 @@
 from django.db import models
 
-# Create your models here.
 class Fragrance(models.Model):
     name = models.CharField(max_length=255)
     price = models.FloatField()
-    stock =  models.IntegerField()
+    salePrice = models.FloatField(null=True, blank=True)
+    category =  models.CharField(max_length=255)
     img = models.CharField(max_length=2083)
+    isOnSale = models.BooleanField(default=False)
