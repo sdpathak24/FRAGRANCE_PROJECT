@@ -18,6 +18,14 @@
             <option value="">All</option>
             <option value="onSale" {% if request.GET.sale == 'onSale' %}selected{% endif %}>Sale</option>
         </select>
+        <label for="brand-filter">Brand:</label>
+        <select name="brand" id="brand-filter" onchange="document.getElementById('filters-form').submit();">
+            <option value="">All Brands</option>
+            <option value="Calvin Klein" {% if request.GET.brand == 'Calvin Klein' %}selected{% endif %}>Calvin Klein</option>
+            <option value="Burberry" {% if request.GET.brand == 'Burberry' %}selected{% endif %}>Burberry</option>
+            <option value="Chanel" {% if request.GET.brand == 'Chanel' %}selected{% endif %}>Chanel</option>
+            <option value="Chloe" {% if request.GET.brand == 'Chloe' %}selected{% endif %}>Chloe</option>
+        </select>
     </div>
 </form>
 
@@ -38,12 +46,14 @@
                         <p class="card-text">${{ frag.price }}</p>
                     {% endif %}
                     
-                    <div class="add-to-cart">
-                        <input type="number" id="quantity-{{ frag.id }}" value="1" min="1" style="width: 60px;">
-                        <button class="btn btn-primary" onclick="addToCart('{{ frag.id }}', '{{ frag.price }}')">
-                            Add to Cart
-                        </button>
-                    </div>
+                    <!-- Add to Cart Form -->
+                    <form method="post" action="{% url 'order' frag.id %}">
+                        {% csrf_token %}
+                        <div class="add-to-cart">
+                            <input type="number" name="quantity" value="1" min="1" style="width: 60px;">
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

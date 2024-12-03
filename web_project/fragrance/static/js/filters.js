@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     const sortFilter = document.getElementById('sort-filter');
     const dealsFilter = document.getElementById('deals-filter');
+    const brandFilter = document.getElementById('brand-filter');
 
     function updateProducts() {
         const sort = sortFilter.value;
         const deals = dealsFilter.value;
+        const brand = brandFilter.value; 
         const category = document.querySelector('#products-container').dataset.category;
 
         fetch(`/shop/${category}/?sort=${sort}&sale=${deals}`)
@@ -40,4 +42,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
     sortFilter.addEventListener('change', updateProducts);
     dealsFilter.addEventListener('change', updateProducts);
+    brandFilter.addEventListener('change', updateProducts);
 });

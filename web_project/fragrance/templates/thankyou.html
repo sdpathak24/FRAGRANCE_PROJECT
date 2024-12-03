@@ -1,0 +1,37 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+    
+    <p>Please fill out the payment details below to complete your order.</p>
+
+    <div id="payment-form" style="margin-top: 20px;">
+        <!-- <h3>Payment Details</h3> -->
+        <form id="paymentForm" method="post">
+            {% csrf_token %}
+            <div>
+                <label for="name">Name on Card:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="ccNumber">Credit Card Number:</label>
+                <input type="text" id="ccNumber" name="ccNumber" required maxlength="16" pattern="\d{16}">
+            </div>
+            <div>
+                <label for="expiry">Expiration Date:</label>
+                <input type="month" id="expiry" name="expiry" required>
+            </div>
+            <div>
+                <label for="securityCode">Security Code (CVV):</label>
+                <input type="text" id="securityCode" name="securityCode" required maxlength="3" pattern="\d{3}">
+            </div>
+            <button type="submit" id="submit-payment" class="btn btn-primary">Submit Payment</button>
+        </form>
+    
+        <div id="thank-you" style="display: none; margin-top: 20px;">
+            <h3>Thank you for your order!</h3>
+        </div>
+    </div>
+
+    <script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}
