@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Fragrance, Cart
 from django.http import JsonResponse
+from django.db.models import F, Value
+from django.db.models.functions import Coalesce
 
 def homePage(request):
     fragrance = Fragrance.objects.all()
@@ -16,9 +18,9 @@ def productsByCategory(request, category):
     brand = request.GET.get('brand')
 
     if sort == 'priceAsc':
-        filteredFragrances = filteredFragrances.order_by('price')
+        filteredFragrances = filteredFragrances.annotate(effective_price=Coalesce('salePrice', 'price')).order_by('effective_price')
     elif sort == 'priceDesc':
-        filteredFragrances = filteredFragrances.order_by('-price')
+        filteredFragrances = filteredFragrances.annotate(effective_price=Coalesce('salePrice', 'price')).order_by('-effective_price')
 
     if deals == 'onSale':
         filteredFragrances = filteredFragrances.filter(isOnSale=True)
@@ -34,7 +36,8 @@ def productsByCategory(request, category):
                     'price': frag.price,
                     'salePrice': frag.salePrice,
                     'img': frag.img,
-                    'isOnSale': frag.isOnSale
+                    'isOnSale': frag.isOnSale,
+                    'brand': frag.brand
                 }
                 for frag in filteredFragrances
             ]
@@ -103,3 +106,6 @@ def clearCart(request):
         request.session['cart'] = {}
         return JsonResponse({'status': 'success', 'message': 'Cart cleared.'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+
+def login(request):
+    pass

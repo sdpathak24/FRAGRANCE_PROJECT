@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const deals = dealsFilter.value;
         const brand = brandFilter.value; 
         const category = document.querySelector('#products-container').dataset.category;
-
-        fetch(`/shop/${category}/?sort=${sort}&sale=${deals}`)
-            .then(response => response.json())
-            .then(data => {
+        $.ajax({
+            url: `/shop/${category}/?sort=${sort}&sale=${deals}&brand=${brand}`,
+            method : "GET",
+            success:(data)=>{
                 const container = document.getElementById('products-container');
                 container.innerHTML = '';
 
@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <div class="card" style="width: 18rem;">
                                 <img src="${frag.img}" class="card-img-top" alt="${frag.name}">
                                 <div class="card-body">
+                                    <h5 class="card-brand">${frag.brand}</h5>
                                     <h5 class="card-title">${frag.name}</h5>
                                     ${
                                         frag.isOnSale
@@ -36,8 +37,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     `;
                     container.insertAdjacentHTML('beforeend', productHTML);
                 });
-            })
-            .catch(error => console.error('Error fetching products:', error));
+            },
+            error: (error) => {
+                console.error('There is an error when fetching products:', error);
+                alert('Failed to fetch products. Please try again.');
+            }
+
+        })
     }
 
     sortFilter.addEventListener('change', updateProducts);

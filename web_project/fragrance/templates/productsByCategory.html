@@ -9,7 +9,7 @@
     <div class="filters">
         <label for="sort-filter">Sort by:</label>
         <select name="sort" id="sort-filter" onchange="document.getElementById('filters-form').submit();">
-            <option value="">Price</option>
+            <option value="">Featured items</option>
             <option value="priceAsc" {% if request.GET.sort == 'priceAsc' %}selected{% endif %}>Low to High</option>
             <option value="priceDesc" {% if request.GET.sort == 'priceDesc' %}selected{% endif %}>High to Low</option>
         </select>
@@ -25,6 +25,8 @@
             <option value="Burberry" {% if request.GET.brand == 'Burberry' %}selected{% endif %}>Burberry</option>
             <option value="Chanel" {% if request.GET.brand == 'Chanel' %}selected{% endif %}>Chanel</option>
             <option value="Chloe" {% if request.GET.brand == 'Chloe' %}selected{% endif %}>Chloe</option>
+            <option value="Ralph Lauren" {% if request.GET.brand == 'Ralph Lauren' %}selected{% endif %}>Ralph Lauren</option>
+            <option value="Dior" {% if request.GET.brand == 'Dior' %}selected{% endif %}>Dior</option>
         </select>
     </div>
 </form>
@@ -36,6 +38,7 @@
             <div class="card" style="width: 18rem;">
                 <img src="{{ frag.img }}" class="card-img-top" alt="{{ frag.name }}">
                 <div class="card-body">
+                    <h5 class="card-brand">{{ frag.brand }}</h5>
                     <h5 class="card-title">{{ frag.name }}</h5>
                     {% if frag.isOnSale %}
                         <p class="card-text">

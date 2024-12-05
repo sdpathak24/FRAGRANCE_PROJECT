@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Form is valid, proceeding with submission');
 
             // Simulate cart clearing via AJAX 
-            fetch('/fragrance/clearCart/', {
+            fetch('/clearCart/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
