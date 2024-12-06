@@ -4,62 +4,69 @@
 {% block content %}
 <h1>Your Cart</h1>
 <div class="cart">
-    {% if cart %}
-    <table>
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for id, item in cart.items %}
-            <tr>
-                <td>{{ item.name }}</td>
-                <!-- <td>${{ item.price }}</td> -->
-                <td>
-                    {% if item.isOnSale %}
-                        <span style="color: red;">${{ item.salePrice }}</span>
-                    {% else %}
-                        ${{ item.price }}
-                    {% endif %}
-                </td>
-                <td>
-                    <form method="post" action="{% url 'updateCart' id %}">
-                        {% csrf_token %}
-                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 60px;">
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </form>
-                </td>
-                <td>${{ item.total }}</td>
-                <td>
-                    <form method="post" action="{% url 'deleteFromCart' id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  {% if cart %}
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for id, item in cart.items %}
+      <tr>
+        <td>
+          {{ item.name }}
+        </td>
+        <td>
+          {% if item.isOnSale %}
+          <span style="color: red;">$
+            {{ item.salePrice }}</span>
+          {% else %}
+          $
+          {{ item.price }}
+          {% endif %}
+        </td>
+        <td>
+          <form method="post" action="{% url 'updateCart' id %}">
+            {% csrf_token %}
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 60px;">
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        </td>
+        <td>$
+          {{ item.total }}
+        </td>
+        <td>
+          <form method="post" action="{% url 'deleteFromCart' id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-    <div class="cart-summary">
-        <p><strong>Total: </strong>${{ total|floatformat:2 }}</p>
+  <div class="cart-summary">
+    <p><strong>Total: </strong>$
+      {{ total|floatformat:2 }}
+    </p>
+  </div>
+
+  <!-- Checkout Form -->
+  <form method="post" action="{% url 'clearCart' %}">
+    {% csrf_token %}
+    <div class="checkout">
+      <button type="submit" class="btn btn-success">Checkout</button>
     </div>
+  </form>
 
-    <form method="post" action="{% url 'thankyou' %}">
-        {% csrf_token %}
-        <div class="checkout">
-            <button type="submit" id="checkout-button" class="btn btn-success">Checkout</button>
-        </div>
-    </form>
-    {% else %}
-        <p>Your cart is empty!</p>
-    {% endif %}
+  {% else %}
+  <p>Your cart is empty!</p>
+  {% endif %}
 </div>
-
-<script src="{% static 'js/cart.js' %}"></script>
 {% endblock %}

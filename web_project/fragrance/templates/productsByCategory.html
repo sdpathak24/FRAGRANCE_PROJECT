@@ -2,65 +2,84 @@
 {% load static %}
 
 {% block content %}
-<h1>{{ category }} Fragrances</h1>
+<h1>
+  {{ category }} Fragrances
+</h1>
 
 <!-- Show Filters -->
 <form method="get" id="filters-form">
-    <div class="filters">
-        <label for="sort-filter">Sort by:</label>
-        <select name="sort" id="sort-filter" onchange="document.getElementById('filters-form').submit();">
-            <option value="">Featured items</option>
-            <option value="priceAsc" {% if request.GET.sort == 'priceAsc' %}selected{% endif %}>Low to High</option>
-            <option value="priceDesc" {% if request.GET.sort == 'priceDesc' %}selected{% endif %}>High to Low</option>
-        </select>
-        <label for="sale-filter">Deals:</label>
-        <select name="sale" id="deals-filter" onchange="document.getElementById('filters-form').submit();">
-            <option value="">All</option>
-            <option value="onSale" {% if request.GET.sale == 'onSale' %}selected{% endif %}>Sale</option>
-        </select>
-        <label for="brand-filter">Brand:</label>
-        <select name="brand" id="brand-filter" onchange="document.getElementById('filters-form').submit();">
-            <option value="">All Brands</option>
-            <option value="Calvin Klein" {% if request.GET.brand == 'Calvin Klein' %}selected{% endif %}>Calvin Klein</option>
-            <option value="Burberry" {% if request.GET.brand == 'Burberry' %}selected{% endif %}>Burberry</option>
-            <option value="Chanel" {% if request.GET.brand == 'Chanel' %}selected{% endif %}>Chanel</option>
-            <option value="Chloe" {% if request.GET.brand == 'Chloe' %}selected{% endif %}>Chloe</option>
-            <option value="Ralph Lauren" {% if request.GET.brand == 'Ralph Lauren' %}selected{% endif %}>Ralph Lauren</option>
-            <option value="Dior" {% if request.GET.brand == 'Dior' %}selected{% endif %}>Dior</option>
-        </select>
-    </div>
+  <div class="filters">
+    <label for="sort-filter">Sort by:</label>
+    <select name="sort" id="sort-filter" onchange="document.getElementById('filters-form').submit();">
+      <option value="">Featured items</option>
+      <option value="priceAsc" {% if request.GET.sort == 'priceAsc' %}selected{% endif %}>Low to High</option>
+      <option value="priceDesc" {% if request.GET.sort == 'priceDesc' %}selected{% endif %}>High to Low</option>
+    </select>
+    <label for="sale-filter">Deals:</label>
+    <select name="sale" id="deals-filter" onchange="document.getElementById('filters-form').submit();">
+      <option value="">All</option>
+      <option value="onSale" {% if request.GET.sale == 'onSale' %}selected{% endif %}>Sale</option>
+    </select>
+    <label for="brand-filter">Brand:</label>
+    <select name="brand" id="brand-filter" onchange="document.getElementById('filters-form').submit();">
+      <option value="">All Brands</option>
+      <option value="Calvin Klein" {% if request.GET.brand == 'Calvin Klein' %}selected{% endif %}>Calvin Klein</option>
+      <option value="Burberry" {% if request.GET.brand == 'Burberry' %}selected{% endif %}>Burberry</option>
+      <option value="Chanel" {% if request.GET.brand == 'Chanel' %}selected{% endif %}>Chanel</option>
+      <option value="Chloe" {% if request.GET.brand == 'Chloe' %}selected{% endif %}>Chloe</option>
+      <option value="Ralph Lauren" {% if request.GET.brand == 'Ralph Lauren' %}selected{% endif %}>Ralph Lauren</option>
+      <option value="Dior" {% if request.GET.brand == 'Dior' %}selected{% endif %}>Dior</option>
+    </select>
+  </div>
 </form>
 
 <!-- View Products -->
 <div class="row">
-    {% for frag in fragrance %}
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="{{ frag.img }}" class="card-img-top" alt="{{ frag.name }}">
-                <div class="card-body">
-                    <h5 class="card-brand">{{ frag.brand }}</h5>
-                    <h5 class="card-title">{{ frag.name }}</h5>
-                    {% if frag.isOnSale %}
-                        <p class="card-text">
-                            <span style="text-decoration: line-through;">${{ frag.price }}</span>
-                            <span style="color: red;">${{ frag.salePrice }}</span>
-                        </p>
-                    {% else %}
-                        <p class="card-text">${{ frag.price }}</p>
-                    {% endif %}
-                    
-                    <!-- Add to Cart Form -->
-                    <form method="post" action="{% url 'order' frag.id %}">
-                        {% csrf_token %}
-                        <div class="add-to-cart">
-                            <input type="number" name="quantity" value="1" min="1" style="width: 60px;">
-                            <button type="submit" class="btn btn-primary">Add to Cart</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    {% endfor %}
+  {% for frag in fragrance %}
+  <div class="col">
+    <div class="card" style="width: 18rem;">
+      <img src="{{ frag.img }}" class="card-img-top" alt="{{ frag.name }}">
+      <div class="card-body">
+        <h5 class="card-brand">
+          {{ frag.brand }}
+        </h5>
+        <h5 class="card-title">
+          {{ frag.name }}
+        </h5>
+        {% if frag.isOnSale %}
+        <p class="card-text">
+          <span style="text-decoration: line-through;">$
+            {{ frag.price }}</span>
+          <span style="color: red;">$
+            {{ frag.salePrice }}</span>
+        </p>
+        {% else %}
+        <p class="card-text">$
+          {{ frag.price }}
+        </p>
+        {% endif %}
+
+        <!-- Add to Cart Form -->
+        <form method="post" action="{% url 'order' frag.id %}">
+          {% csrf_token %}
+          <div class="add-to-cart">
+            <!-- <input type="number" name="quantity" value="1" min="1" style="width: 60px;" oninput="this.value = this.value < 1 || this.value === '' ? 1 : this.value;"> -->
+            <input type="number" name="quantity" value="1" min="1" style="width: 60px;" id="quantity-input">
+            <button type="submit" class="btn btn-primary">Add to Cart</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 </div>
+
+<script>
+  document.getElementById('quantity-input').addEventListener('input', function() {
+    if (this.value === '' || this.value < 1) {
+      this.value = 1; // Reset to 1 if empty or below minimum
+    }
+  });
+</script>
 
 {% endblock %}
