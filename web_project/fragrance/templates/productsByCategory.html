@@ -7,30 +7,34 @@
 </h1>
 
 <!-- Show Filters -->
-<form method="get" id="filters-form">
-  <div class="filters">
+<form method="get" id="filters-form" class="filters-form">  
+    <div class="search-container">
+        <input type="text" name="name" id="search-name" placeholder="Enter product name" value="{{ request.GET.name }}">
+        <button type="submit" class="btn btn-primary" style="background-color: #32465a; border-color: #2980b9;">Search</button>
+    </div>
+    <div class="filters"> 
     <label for="sort-filter">Sort by:</label>
     <select name="sort" id="sort-filter" onchange="document.getElementById('filters-form').submit();">
-      <option value="">Featured items</option>
-      <option value="priceAsc" {% if request.GET.sort == 'priceAsc' %}selected{% endif %}>Low to High</option>
-      <option value="priceDesc" {% if request.GET.sort == 'priceDesc' %}selected{% endif %}>High to Low</option>
+        <option value="">Featured items</option>
+        <option value="priceAsc" {% if request.GET.sort == 'priceAsc' %}selected{% endif %}>Price: Low to High</option>
+        <option value="priceDesc" {% if request.GET.sort == 'priceDesc' %}selected{% endif %}>Price: High to Low</option>
     </select>
     <label for="sale-filter">Deals:</label>
     <select name="sale" id="deals-filter" onchange="document.getElementById('filters-form').submit();">
-      <option value="">All</option>
-      <option value="onSale" {% if request.GET.sale == 'onSale' %}selected{% endif %}>Sale</option>
+        <option value="">All</option>
+        <option value="onSale" {% if request.GET.sale == 'onSale' %}selected{% endif %}>Sale</option>
     </select>
     <label for="brand-filter">Brand:</label>
     <select name="brand" id="brand-filter" onchange="document.getElementById('filters-form').submit();">
-      <option value="">All Brands</option>
-      <option value="Calvin Klein" {% if request.GET.brand == 'Calvin Klein' %}selected{% endif %}>Calvin Klein</option>
-      <option value="Burberry" {% if request.GET.brand == 'Burberry' %}selected{% endif %}>Burberry</option>
-      <option value="Chanel" {% if request.GET.brand == 'Chanel' %}selected{% endif %}>Chanel</option>
-      <option value="Chloe" {% if request.GET.brand == 'Chloe' %}selected{% endif %}>Chloe</option>
-      <option value="Ralph Lauren" {% if request.GET.brand == 'Ralph Lauren' %}selected{% endif %}>Ralph Lauren</option>
-      <option value="Dior" {% if request.GET.brand == 'Dior' %}selected{% endif %}>Dior</option>
+        <option value="">All Brands</option>
+        <option value="Calvin Klein" {% if request.GET.brand == 'Calvin Klein' %}selected{% endif %}>Calvin Klein</option>
+        <option value="Burberry" {% if request.GET.brand == 'Burberry' %}selected{% endif %}>Burberry</option>
+        <option value="Chanel" {% if request.GET.brand == 'Chanel' %}selected{% endif %}>Chanel</option>
+        <option value="Chloe" {% if request.GET.brand == 'Chloe' %}selected{% endif %}>Chloe</option>
+        <option value="Ralph Lauren" {% if request.GET.brand == 'Ralph Lauren' %}selected{% endif %}>Ralph Lauren</option>
+        <option value="Dior" {% if request.GET.brand == 'Dior' %}selected{% endif %}>Dior</option>
     </select>
-  </div>
+    </div>
 </form>
 
 <!-- View Products -->
@@ -63,9 +67,8 @@
         <form method="post" action="{% url 'order' frag.id %}">
           {% csrf_token %}
           <div class="add-to-cart">
-            <!-- <input type="number" name="quantity" value="1" min="1" style="width: 60px;" oninput="this.value = this.value < 1 || this.value === '' ? 1 : this.value;"> -->
             <input type="number" name="quantity" value="1" min="1" style="width: 60px;" id="quantity-input">
-            <button type="submit" class="btn btn-primary">Add to Cart</button>
+            <button type="submit" class="btn btn-primary" style="background-color: #2c3e50; border-color: #2980b9;">Add to Cart</button>
           </div>
         </form>
       </div>
@@ -77,7 +80,7 @@
 <script>
   document.getElementById('quantity-input').addEventListener('input', function() {
     if (this.value === '' || this.value < 1) {
-      this.value = 1; // Reset to 1 if empty or below minimum
+      this.value = 1;
     }
   });
 </script>

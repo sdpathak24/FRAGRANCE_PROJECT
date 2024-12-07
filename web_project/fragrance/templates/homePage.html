@@ -50,7 +50,7 @@
 </div>
 
 <!-- Men's Products Section -->
-<h2 class="mt-5">Men's Fragrances</h2>
+<h2 class="mt-5">Men's Limited Fragrances</h2>
 <div class="row">
   {% for frag in men_products %}
   <div class="col-md-4 mb-4">
@@ -75,7 +75,7 @@
           {{ frag.price }}
         </p>
         {% endif %}
-        <a href="{% url 'order' frag.id %}" class="btn btn-primary">Order Now</a>
+        <a href="{% url 'order' frag.id %}" class="btn btn-primary" style="background-color: #2c3e50; border-color: #2980b9;">Order Now</a>
       </div>
     </div>
   </div>
@@ -83,7 +83,7 @@
 </div>
 
 <!-- Women's Products Section -->
-<h2 class="mt-5">Women's Fragrances</h2>
+<h2 class="mt-5">Women's Limited Fragrances</h2>
 <div class="row">
   {% for frag in women_products %}
   <div class="col-md-4 mb-4">
@@ -108,7 +108,7 @@
           {{ frag.price }}
         </p>
         {% endif %}
-        <a href="{% url 'order' frag.id %}" class="btn btn-primary">Order Now</a>
+        <a href="{% url 'order' frag.id %}" class="btn btn-primary" style="background-color: #2c3e50; border-color: #2980b9;">Order Now</a>
       </div>
     </div>
   </div>

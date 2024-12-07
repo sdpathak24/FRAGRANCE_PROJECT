@@ -2,14 +2,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const sortFilter = document.getElementById('sort-filter');
     const dealsFilter = document.getElementById('deals-filter');
     const brandFilter = document.getElementById('brand-filter');
+    const searchName = document.getElementById('search-name');
 
     function updateProducts() {
         const sort = sortFilter.value;
         const deals = dealsFilter.value;
         const brand = brandFilter.value; 
+        const search = searchName.value;
         const category = document.querySelector('#products-container').dataset.category;
         $.ajax({
-            url: `/shop/${category}/?sort=${sort}&sale=${deals}&brand=${brand}`,
+            url: `/shop/${category}/?sort=${sort}&sale=${deals}&brand=${brand}&search=${encodeURIComponent(search)}`,
             method : "GET",
             success:(data)=>{
                 const container = document.getElementById('products-container');
@@ -49,4 +51,5 @@ document.addEventListener('DOMContentLoaded', function () {
     sortFilter.addEventListener('change', updateProducts);
     dealsFilter.addEventListener('change', updateProducts);
     brandFilter.addEventListener('change', updateProducts);
+    searchName.addEventListener('input', updateProducts);
 });
