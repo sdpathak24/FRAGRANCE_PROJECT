@@ -34,7 +34,7 @@
         <td>
           <form method="post" action="{% url 'updateCart' id %}">
             {% csrf_token %}
-            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 60px;">
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width: 60px;" id="quantity-input-{{ forloop.counter }}">
             <button type="submit" class="btn btn-primary" style="background-color: #6c9aa2; border-color: #2980b9;">Update</button>
           </form>
         </td>
@@ -70,4 +70,17 @@
   <p>Your cart is empty!</p>
   {% endif %}
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const quantityInputs = document.querySelectorAll('[id^="quantity-input-"]');
+      quantityInputs.forEach(function(input) {
+        input.addEventListener('input', function() {
+          if (this.value === '' || this.value < 1) {
+            this.value = 1;
+          }
+        });
+      });
+    });
+  </script>
 {% endblock %}
