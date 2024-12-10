@@ -1,4 +1,5 @@
 {% extends 'index.html' %}
+{% load static %}
 
 {% block content %}
 <!DOCTYPE html>
@@ -9,17 +10,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <style>
-    /* General Page Styles */
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
       align-items: center;
       height: 100vh;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      background: url("{% static 'imgs/frag.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       color: #fff;
+      width: 100%; 
+
     }
 
     /* Login Container */
@@ -48,31 +53,26 @@
       width: 100%;
       padding: 15px;
       margin: 10px 0;
-      border: none;
+      border: 6px solid rgba(75, 142, 175, 0.5);
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.2);
-      color: #fff;
+      color: #000; 
       font-size: 1rem;
-    }
-
-    .login-container input::placeholder {
-      color: rgba(255, 255, 255, 0.7);
     }
 
     .login-container input:focus {
       outline: none;
       background: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 0 5px #6a11cb, 0 0 10px #2575fc;
+      box-shadow: 0 0 5px #1c407f, 0 0 10px #458ece;
     }
 
-    /* Buttons */
     .login-container button {
       width: 100%;
       padding: 15px;
       margin-top: 15px;
       border: none;
       border-radius: 10px;
-      background: linear-gradient(135deg, #2575fc, #6a11cb);
+      background: linear-gradient(135deg, #1c407f, #458ece);
       color: #fff;
       font-size: 1rem;
       font-weight: bold;
@@ -81,7 +81,7 @@
     }
 
     .login-container button:hover {
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      background: linear-gradient(135deg, #1c407f, #458ece);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
@@ -92,7 +92,14 @@
       margin: 10px 0;
     }
 
-    /* Add Spacing for Input Labels */
+    .login-container h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #2c61a2;
+        font-weight: 600;
+    }
+
+
     .login-container label {
       display: block;
       margin: 15px 0 5px;
@@ -100,7 +107,6 @@
       color: rgba(255, 255, 255, 0.9);
     }
 
-    /* Add Responsive Design */
     @media (max-width: 480px) {
       .login-container {
         padding: 20px;
@@ -108,6 +114,9 @@
 
       .login-container h1 {
         font-size: 2rem;
+        margin-bottom: 20px;
+        color: #2c61a2;  /* Change this to the desired color */
+        font-weight: 600;
       }
 
       .login-container input,
@@ -120,7 +129,7 @@
 
 <body>
   <div class="login-container">
-    <h1>Login</h1>
+    <h1>Login to SCENTIQUES</h1>
     <div>
       {% if error %}
       <p>

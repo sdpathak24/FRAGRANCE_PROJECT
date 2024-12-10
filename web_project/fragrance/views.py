@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Fragrance, Cart
 from django.http import JsonResponse
-from django.db.models import F, Value
+from django.db.models import F, Value, Q
 from django.db.models.functions import Coalesce
 
 def homePage(request):
@@ -31,7 +31,8 @@ def productsByCategory(request, category):
     brand = request.GET.get('brand')
 
     if name:
-        filteredFragrances = filteredFragrances.filter(name__icontains=name)
+        # filteredFragrances = filteredFragrances.filter(name__icontains=name)
+        filteredFragrances = filteredFragrances.filter(Q(name__icontains=name) | Q(brand__icontains=name))
 
     if sort == 'priceAsc':
         filteredFragrances = filteredFragrances.annotate(effective_price=Coalesce('salePrice', 'price')).order_by('effective_price')
@@ -90,7 +91,7 @@ def cart(request):
         return redirect('login')  # Redirect to login page
     cart = request.session.get('cart', {})
     total = 0
-    for item_id, item in cart.items():
+    for itemId, item in cart.items():
         salePrice = item['salePrice']
         price = salePrice if salePrice else item['price']
         img = item['img']
@@ -120,10 +121,8 @@ def deleteFromCart(request, id):
     return redirect('cart')
 
 def thankyou(request):
-    # You can process the payment here and clear the cart if needed
     if request.method == "POST":
-        # Simulate successful payment processing
-        # For now, let's assume payment is always successful
+        # Right now let's assume payment is successful
         request.session['cart'] = {}  # Clear the cart after successful payment
 
         return JsonResponse({'status': 'success'})
@@ -148,12 +147,9 @@ def login_page(request):
 
     return render(request, 'login.html', {'hide_navbar': True})
 
-
-# Logout view
 def logout(request):
     request.session.flush()
     return redirect('login')
-
 
 def some_protected_view(request):
     if 'username' not in request.session:
